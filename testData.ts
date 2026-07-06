@@ -25,9 +25,13 @@ export const HARVESTING_DATA = {
   platform: 'Platform 8',
   // Harvest input values
   totalBunches: '132',
+  rotten: '0',
   unripe: '021',
   overRipe: '01',
   underRipe: '012',
+  emptyBunch: '0',
+  looseFruit: '0',
+  remarks: 'Automated harvesting data',
 };
 
 // ===== HARVESTING ADD AUTOMATED FLOW CONFIG =====
