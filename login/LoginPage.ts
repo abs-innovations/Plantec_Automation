@@ -8,6 +8,7 @@ import { Account } from '../utils/accountLoader';
  * Please open the real login page, inspect the username/password fields and
  * login button, and update the locators below if they don't match.
  * hi
+ * hi2
  */
 export class LoginPage {
   readonly page: Page;
