@@ -42,6 +42,7 @@ async function fillVisibleTextbox(page: Page, fieldName: string, value: string) 
     return;
   }
   await textbox.first().fill(value);
+  
 }
 
 async function runIncrementActions(page: Page, containerSelector: string, actions: readonly ClickAction[]) {
