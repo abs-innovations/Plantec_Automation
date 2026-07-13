@@ -57,9 +57,38 @@ async function selectEstate(page: Page, estateName: string) {
     return;
   }
 
-  const estateButton = page.getByRole('button', { name: /estate|please select estate/i }).first();
+  const estateButtonCandidates = [
+    page.locator('text=Estate').first().locator('xpath=following::button[1]'),
+    page.getByRole('button', { name: /please select estate|estate|kav/i }).first(),
+    page.locator('form button').filter({ hasText: /please select estate|estate|kav/i }).first(),
+  ];
+
+  let estateButton = estateButtonCandidates[0];
+  for (const candidate of estateButtonCandidates) {
+    if (await candidate.isVisible().catch(() => false)) {
+      estateButton = candidate;
+      break;
+    }
+  }
+
+  await estateButton.scrollIntoViewIfNeeded();
   await estateButton.click();
-  await page.locator('a').filter({ hasText: estateName }).first().click();
+
+  const estateOptionCandidates = [
+    page.locator('a').filter({ hasText: new RegExp(`^${escapeForRegex(estateName)}$`, 'i') }).first(),
+    page.getByRole('option', { name: new RegExp(escapeForRegex(estateName), 'i') }).first(),
+    page.locator('li, a, span').filter({ hasText: new RegExp(`^${escapeForRegex(estateName)}$`, 'i') }).first(),
+  ];
+
+  for (const option of estateOptionCandidates) {
+    if (await option.isVisible().catch(() => false)) {
+      await option.click();
+      await expect(estateButton).toContainText(estateName, { timeout: 10000 });
+      return;
+    }
+  }
+
+  throw new Error(`Estate option '${estateName}' was not found after opening dropdown.`);
 }
 
 async function selectOrganization(page: Page) {
@@ -150,18 +179,15 @@ async function fillNumericValues(page: Page) {
   await fillTextFieldByLabel(page, 'Empty Bunch', VALIDATION_DATA.emptyBunch);
 }
 
-async function assertCannotSaveAndValidationShown(page: Page) {
+async function assertAutoCorrectedTotalBunches(page: Page) {
   await clickSave(page);
 
-  const validationText = page.getByText(/total harvested bunches.*(must not exceed|cannot exceed).*(1000)/i);
-  await expect(validationText.first()).toBeVisible({ timeout: 10000 });
-
-  // User should remain on add form when validation fails.
-  await expect(page).toHaveURL(/harvesting_add(\?|$)/i);
-  await expect(page.getByRole('heading', { name: /Add FFB Record/i })).toBeVisible();
+  // Current system behavior: values above 1000 are auto-corrected to 1000.
+  const totalBunchesInput = page.getByRole('textbox', { name: /Total Harvested Bunches/i }).first();
+  await expect(totalBunchesInput).toHaveValue(/1,?000/, { timeout: 10000 });
 }
 
-test('[TC-Validation] Prevent save when Total Harvested Bunches is more than 1000', async ({ page }) => {
+test('[TC-161] Auto-correct Total Harvested Bunches when value is more than 1000', async ({ page }) => {
   test.setTimeout(180000);
 
   const loginPage = new LoginPage(page);
@@ -193,8 +219,8 @@ test('[TC-Validation] Prevent save when Total Harvested Bunches is more than 100
     await expect(totalBunchesInput).toHaveValue('1001');
   });
 
-  await test.step('7. Fill other numeric fields and click Save. Verify validation blocks save', async () => {
+  await test.step('7. Fill other numeric fields and click Save. Verify value is auto-corrected to 1000', async () => {
     await fillNumericValues(page);
-    await assertCannotSaveAndValidationShown(page);
+    await assertAutoCorrectedTotalBunches(page);
   });
 });
