@@ -1,0 +1,6 @@
+<testsuites id="" name="" tests="1" failures="0" skipped="0" errors="0" time="38.65965">
+<testsuite name="ffb_harvesing\EditFFB.spec.ts" timestamp="2026-07-14T07:39:15.433Z" hostname="chromium" tests="1" failures="0" skipped="0" time="35.372" errors="0">
+<testcase name="Edit FFB" classname="ffb_harvesing\EditFFB.spec.ts" time="35.372">
+</testcase>
+</testsuite>
+</testsuites>
