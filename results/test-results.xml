@@ -1,0 +1,8 @@
+<testsuites id="" name="" tests="1" failures="0" skipped="1" errors="0" time="0.21608299999999997">
+<testsuite name="ffb_harvesing\HarvestingAdd.spec.ts" timestamp="2026-07-08T02:05:23.226Z" hostname="chromium" tests="1" failures="0" skipped="1" time="0" errors="0">
+<testcase name="[TC-170] FFB Harvesting - Add automated flow" classname="ffb_harvesing\HarvestingAdd.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+</testsuites>
