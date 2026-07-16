@@ -2,8 +2,10 @@ import { expect, Locator, Page, test } from '@playwright/test';
 import { LoginPage } from '../tests/pages/LoginPage';
 import { BASE_URL, LOGIN_CREDENTIALS } from '../testData';
 
-const TEST_CASE_CODE = 'FFB-156';
-const TEST_CASE_NAME = 'Edit FFB';
+const TEST_CASE = {
+    code: 'FFB-102',
+    name: 'Edit FFB'
+};
 
 const UPDATED_VALUES = {
   harvestedBunches: '500',
@@ -296,9 +298,9 @@ async function searchTransactionInWebReport(page: Page, keyword: string) {
   ).toBeVisible({ timeout: 15000 });
 }
 
-test(TEST_CASE_NAME, async ({ page }) => {
-  test.setTimeout(180000);
-  test.info().annotations.push({ type: 'test_case', description: TEST_CASE_CODE });
+  test(`${TEST_CASE.code} - ${TEST_CASE.name}`, async ({ page }) => {
+    test.setTimeout(180000);
+    test.info().annotations.push({ type: 'test_case', description: TEST_CASE.code });
 
   const loginPage = new LoginPage(page);
 
