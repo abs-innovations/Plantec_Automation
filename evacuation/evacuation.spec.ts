@@ -1,7 +1,7 @@
 import { test } from '@playwright/test';
 import { LoginPage } from '../tests/pages/LoginPage';
 import { EvacuationPage } from '../tests/pages/EvacuationPage';
-import { BASE_URL, EVACUATION_DATA, LOGIN_CREDENTIALS } from './utils/testData';
+import { BASE_URL, EVACUATION_DATA, LOGIN_CREDENTIALS } from '../testData';
 
 test('Evacuation Module - Add Evacuation Record', async ({ page }) => {
   const loginPage = new LoginPage(page);

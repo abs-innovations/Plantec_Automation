@@ -1,6 +1,68 @@
-<testsuites id="" name="" tests="1" failures="0" skipped="0" errors="0" time="38.65965">
-<testsuite name="ffb_harvesing\EditFFB.spec.ts" timestamp="2026-07-14T07:39:15.433Z" hostname="chromium" tests="1" failures="0" skipped="0" time="35.372" errors="0">
-<testcase name="Edit FFB" classname="ffb_harvesing\EditFFB.spec.ts" time="35.372">
+<testsuites id="" name="" tests="1" failures="0" skipped="0" errors="1" time="196.060135">
+<testsuite name="ffb_harvesing\HarvestingAdd.spec.ts" timestamp="2026-08-10T08:14:29.794Z" hostname="chromium" tests="1" failures="0" skipped="0" time="187.376" errors="1">
+<testcase name="[TC-170] FFB Harvesting - Add automated flow" classname="ffb_harvesing\HarvestingAdd.spec.ts" time="187.376">
+<system-out>
+<![CDATA[[HarvestingAdd] profile=default seed=1786349670334-31572 primaryPlatform="Platform 4" secondaryPlatform="Platform 5" platformPool=[Platform 1, Platform 2, Platform 3, Platform 4, Platform 5, Platform 6, Platform 7, Platform 8, Platform 9]
+Estate dropdown not available. Skipping estate selection.
+Waiting for Phase option: "Phase 1"
+Phase selected successfully: "Phase 1"
+Selected "Block 1" from native select for "Block"
+Selected "2012" from native select for "Planting Year"
+Selected "Lot 1" from native select for "Lot"
+Selected "T01" from native select for "Task"
+Selected "Platform 4" from native select for "Platform"
+Selected "Platform 5" from native select for "Platform"
+Field "Inspector" is present but option "Hafizah user (Assistant" was not selectable. Skipping optional field.
+Opening dropdown: "Nothing Selected" (attempt 1)
+
+[[ATTACHMENT|..\test-results\ffb_harvesing-HarvestingAd-eda4f-esting---Add-automated-flow-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|..\test-results\ffb_harvesing-HarvestingAd-eda4f-esting---Add-automated-flow-chromium\video.webm]]
+
+[[ATTACHMENT|..\test-results\ffb_harvesing-HarvestingAd-eda4f-esting---Add-automated-flow-chromium\error-context.md]]
+
+[[ATTACHMENT|..\test-results\ffb_harvesing-HarvestingAd-eda4f-esting---Add-automated-flow-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="Test timeout of 180000ms exceeded." type="Error">
+<![CDATA[  [chromium] › ffb_harvesing\HarvestingAdd.spec.ts:523:5 › [TC-170] FFB Harvesting - Add automated flow › Fill main harvesting selections 
+
+    Test timeout of 180000ms exceeded.
+
+    Error: Unable to locate dropdown/select for "Nothing Selected".
+
+      332 |   }
+      333 |
+    > 334 |   throw new Error(`Unable to locate dropdown/select for "${buttonLabel}".`);
+          |         ^
+      335 | }
+      336 |
+      337 | async function selectHarvesters(page: Page) {
+        at selectDropdownByButtonLabel (C:\Users\hafiz\OneDrive\Documents\ABS\Plantec_Automation\ffb_harvesing\HarvestingAdd.spec.ts:334:9)
+        at selectHarvesters (C:\Users\hafiz\OneDrive\Documents\ABS\Plantec_Automation\ffb_harvesing\HarvestingAdd.spec.ts:338:3)
+        at fillHarvestingDropdowns (C:\Users\hafiz\OneDrive\Documents\ABS\Plantec_Automation\ffb_harvesing\HarvestingAdd.spec.ts:630:3)
+        at C:\Users\hafiz\OneDrive\Documents\ABS\Plantec_Automation\ffb_harvesing\HarvestingAdd.spec.ts:539:5
+        at C:\Users\hafiz\OneDrive\Documents\ABS\Plantec_Automation\ffb_harvesing\HarvestingAdd.spec.ts:536:3
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\ffb_harvesing-HarvestingAd-eda4f-esting---Add-automated-flow-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
+    test-results\ffb_harvesing-HarvestingAd-eda4f-esting---Add-automated-flow-chromium\video.webm
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\ffb_harvesing-HarvestingAd-eda4f-esting---Add-automated-flow-chromium\error-context.md
+
+    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results\ffb_harvesing-HarvestingAd-eda4f-esting---Add-automated-flow-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace test-results\ffb_harvesing-HarvestingAd-eda4f-esting---Add-automated-flow-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
 </testcase>
 </testsuite>
 </testsuites>
