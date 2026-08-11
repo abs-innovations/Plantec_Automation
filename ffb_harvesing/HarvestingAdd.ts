@@ -26,7 +26,7 @@ test('FFB Harvesting - Add (recorded flow)', async ({ page }) => {
   });
 
   await runStep(async () => {
-    await page.getByRole('textbox', { name: 'Password' }).fill('pmmp123');
+    await page.getByRole('textbox', { name: 'Password' }).fill('pmmpcbi123');
   });
 
   await runStep(async () => {
@@ -38,15 +38,15 @@ test('FFB Harvesting - Add (recorded flow)', async ({ page }) => {
   });
 
   await runStep(async () => {
-    await page.getByRole('link', { name: ' FFB Harvesting' }).click();
+    await page.getByRole('link', { name: 'FFB Harvesting' }).click();
   });
 
   await runStep(async () => {
-    await page.getByRole('link', { name: ' FFB Harvesting' }).click();
+    await page.getByRole('link', { name: 'FFB Harvesting' }).click();
   });
 
   await runStep(async () => {
-    await page.getByRole('link', { name: ' Add FFB Harvesting' }).click();
+    await page.getByRole('link', { name: 'Add FFB Harvesting' }).click();
   });
 
   await runStep(async () => {

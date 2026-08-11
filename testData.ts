@@ -1,140 +1,386 @@
-/**
- * Centralized test data and constants
- * Update these values to reflect your test environment and test cases
- */
+import fs from 'fs';
+import path from 'path';
 
-// ===== LOGIN CREDENTIALS =====
+type ClickAction = 'click' | 'dblclick';
+
+type TestDataBundle = {
+  baseUrl: string;
+  loginCredentials: {
+    username: string;
+    password: string;
+  };
+  harvestingData: {
+    estate: string;
+    phase: string;
+    block: string;
+    plantingYear: string;
+    lot: string;
+    loader: string;
+    loaderStaff: string;
+    task: string;
+    platform: string;
+    totalBunches: string;
+    rotten: string;
+    unripe: string;
+    overRipe: string;
+    underRipe: string;
+    emptyBunch: string;
+    looseFruit: string;
+    remarks: string;
+  };
+  harvestingAddFlow: {
+    phase: string;
+    block: string;
+    plantingYear: string;
+    lot: string;
+    task: string;
+    primaryPlatform: string;
+    secondaryPlatformButton: string;
+    secondaryPlatformDataId?: string;
+    secondaryPlatformOption: string;
+    approverButton: string;
+    approverOption: string;
+    harvesterGroupButton: string;
+    harvesterGroupOption: string;
+    harvesterSelectButton: string;
+    harvesters: string[];
+    incrementActions: Record<string, ClickAction[]>;
+    finalCounterSelector: string;
+    finalCounterClicks: number;
+  };
+  evacuationData: {
+    estate: string;
+    estateValue: string;
+    phase: string;
+    block: string;
+    lot: string;
+    binValue: string;
+    vehicleValue: string;
+    driverGroup: string;
+    driver: string;
+    loaderGroup: string;
+    loader: string;
+    vehicleNo: string;
+    driverName: string;
+    totalBunches: string;
+    rangeStartDay: string;
+    rangeEndDay: string;
+  };
+  alternativeLoader: string;
+  timeouts: {
+    short: number;
+    medium: number;
+    long: number;
+  };
+  platformOptions: string[];
+  testScenarios: Record<string, Record<string, string>>;
+};
+
+function readJson(profileName: string): unknown {
+  const profilePath = path.join(__dirname, 'test-data', 'profiles', `${profileName}.json`);
+  const content = fs.readFileSync(profilePath, 'utf-8');
+  return JSON.parse(content);
+}
+
+function requireObject(value: unknown, field: string): Record<string, unknown> {
+  if (typeof value !== 'object' || value === null || Array.isArray(value)) {
+    throw new Error(`Invalid test data: '${field}' must be an object.`);
+  }
+  return value as Record<string, unknown>;
+}
+
+function requireString(value: unknown, field: string): string {
+  if (typeof value !== 'string' || !value.trim()) {
+    throw new Error(`Invalid test data: '${field}' must be a non-empty string.`);
+  }
+  return value;
+}
+
+function requireNumber(value: unknown, field: string): number {
+  if (typeof value !== 'number' || Number.isNaN(value)) {
+    throw new Error(`Invalid test data: '${field}' must be a valid number.`);
+  }
+  return value;
+}
+
+function requireStringArray(value: unknown, field: string): string[] {
+  if (!Array.isArray(value) || value.some((item) => typeof item !== 'string')) {
+    throw new Error(`Invalid test data: '${field}' must be an array of strings.`);
+  }
+  return value as string[];
+}
+
+function optionalString(value: unknown): string | undefined {
+  if (typeof value !== 'string') {
+    return undefined;
+  }
+
+  const normalized = value.trim();
+  return normalized || undefined;
+}
+
+function requireClickActions(value: unknown, field: string): ClickAction[] {
+  if (!Array.isArray(value)) {
+    throw new Error(`Invalid test data: '${field}' must be an array.`);
+  }
+
+  const actions = value as unknown[];
+  for (const action of actions) {
+    if (action !== 'click' && action !== 'dblclick') {
+      throw new Error(`Invalid test data: '${field}' must contain only 'click' or 'dblclick'.`);
+    }
+  }
+
+  return actions as ClickAction[];
+}
+
+function optionalStringArray(value: unknown): string[] {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  return value
+    .filter((item): item is string => typeof item === 'string')
+    .map((item) => item.replace(/\u00A0/g, ' ').replace(/\s+/g, ' ').trim())
+    .filter((item) => !!item);
+}
+
+function parseBundle(raw: unknown): TestDataBundle {
+  const root = requireObject(raw, 'root');
+
+  const loginCredentials = requireObject(root.loginCredentials, 'loginCredentials');
+  const harvestingData = requireObject(root.harvestingData, 'harvestingData');
+  const harvestingAddFlow = requireObject(root.harvestingAddFlow, 'harvestingAddFlow');
+  const evacuationData = requireObject(root.evacuationData, 'evacuationData');
+  const timeouts = requireObject(root.timeouts, 'timeouts');
+  const testScenarios = requireObject(root.testScenarios, 'testScenarios');
+
+  const incrementActionsRaw = requireObject(harvestingAddFlow.incrementActions, 'harvestingAddFlow.incrementActions');
+  const incrementActions: Record<string, ClickAction[]> = {};
+  for (const [key, value] of Object.entries(incrementActionsRaw)) {
+    incrementActions[key] = requireClickActions(value, `harvestingAddFlow.incrementActions.${key}`);
+  }
+
+  const parsedScenarios: Record<string, Record<string, string>> = {};
+  for (const [scenarioName, scenarioData] of Object.entries(testScenarios)) {
+    const scenarioObj = requireObject(scenarioData, `testScenarios.${scenarioName}`);
+    const normalized: Record<string, string> = {};
+    for (const [key, value] of Object.entries(scenarioObj)) {
+      normalized[key] = requireString(value, `testScenarios.${scenarioName}.${key}`);
+    }
+    parsedScenarios[scenarioName] = normalized;
+  }
+
+  return {
+    baseUrl: requireString(root.baseUrl, 'baseUrl'),
+    loginCredentials: {
+      username: requireString(loginCredentials.username, 'loginCredentials.username'),
+      password: requireString(loginCredentials.password, 'loginCredentials.password'),
+    },
+    harvestingData: {
+      estate: requireString(harvestingData.estate, 'harvestingData.estate'),
+      phase: requireString(harvestingData.phase, 'harvestingData.phase'),
+      block: requireString(harvestingData.block, 'harvestingData.block'),
+      plantingYear: requireString(harvestingData.plantingYear, 'harvestingData.plantingYear'),
+      lot: requireString(harvestingData.lot, 'harvestingData.lot'),
+      loader: requireString(harvestingData.loader, 'harvestingData.loader'),
+      loaderStaff: requireString(harvestingData.loaderStaff, 'harvestingData.loaderStaff'),
+      task: requireString(harvestingData.task, 'harvestingData.task'),
+      platform: requireString(harvestingData.platform, 'harvestingData.platform'),
+      totalBunches: requireString(harvestingData.totalBunches, 'harvestingData.totalBunches'),
+      rotten: requireString(harvestingData.rotten, 'harvestingData.rotten'),
+      unripe: requireString(harvestingData.unripe, 'harvestingData.unripe'),
+      overRipe: requireString(harvestingData.overRipe, 'harvestingData.overRipe'),
+      underRipe: requireString(harvestingData.underRipe, 'harvestingData.underRipe'),
+      emptyBunch: requireString(harvestingData.emptyBunch, 'harvestingData.emptyBunch'),
+      looseFruit: requireString(harvestingData.looseFruit, 'harvestingData.looseFruit'),
+      remarks: requireString(harvestingData.remarks, 'harvestingData.remarks'),
+    },
+    harvestingAddFlow: {
+      phase: requireString(harvestingAddFlow.phase, 'harvestingAddFlow.phase'),
+      block: requireString(harvestingAddFlow.block, 'harvestingAddFlow.block'),
+      plantingYear: requireString(harvestingAddFlow.plantingYear, 'harvestingAddFlow.plantingYear'),
+      lot: requireString(harvestingAddFlow.lot, 'harvestingAddFlow.lot'),
+      task: requireString(harvestingAddFlow.task, 'harvestingAddFlow.task'),
+      primaryPlatform: requireString(harvestingAddFlow.primaryPlatform, 'harvestingAddFlow.primaryPlatform'),
+      secondaryPlatformButton: requireString(harvestingAddFlow.secondaryPlatformButton, 'harvestingAddFlow.secondaryPlatformButton'),
+      secondaryPlatformDataId: optionalString(harvestingAddFlow.secondaryPlatformDataId),
+      secondaryPlatformOption: requireString(harvestingAddFlow.secondaryPlatformOption, 'harvestingAddFlow.secondaryPlatformOption'),
+      approverButton: requireString(harvestingAddFlow.approverButton, 'harvestingAddFlow.approverButton'),
+      approverOption: requireString(harvestingAddFlow.approverOption, 'harvestingAddFlow.approverOption'),
+      harvesterGroupButton: requireString(harvestingAddFlow.harvesterGroupButton, 'harvestingAddFlow.harvesterGroupButton'),
+      harvesterGroupOption: requireString(harvestingAddFlow.harvesterGroupOption, 'harvestingAddFlow.harvesterGroupOption'),
+      harvesterSelectButton: requireString(harvestingAddFlow.harvesterSelectButton, 'harvestingAddFlow.harvesterSelectButton'),
+      harvesters: requireStringArray(harvestingAddFlow.harvesters, 'harvestingAddFlow.harvesters'),
+      incrementActions,
+      finalCounterSelector: requireString(harvestingAddFlow.finalCounterSelector, 'harvestingAddFlow.finalCounterSelector'),
+      finalCounterClicks: requireNumber(harvestingAddFlow.finalCounterClicks, 'harvestingAddFlow.finalCounterClicks'),
+    },
+    evacuationData: {
+      estate: requireString(evacuationData.estate, 'evacuationData.estate'),
+      estateValue: requireString(evacuationData.estateValue, 'evacuationData.estateValue'),
+      phase: requireString(evacuationData.phase, 'evacuationData.phase'),
+      block: requireString(evacuationData.block, 'evacuationData.block'),
+      lot: requireString(evacuationData.lot, 'evacuationData.lot'),
+      binValue: requireString(evacuationData.binValue, 'evacuationData.binValue'),
+      vehicleValue: requireString(evacuationData.vehicleValue, 'evacuationData.vehicleValue'),
+      driverGroup: requireString(evacuationData.driverGroup, 'evacuationData.driverGroup'),
+      driver: requireString(evacuationData.driver, 'evacuationData.driver'),
+      loaderGroup: requireString(evacuationData.loaderGroup, 'evacuationData.loaderGroup'),
+      loader: requireString(evacuationData.loader, 'evacuationData.loader'),
+      vehicleNo: requireString(evacuationData.vehicleNo, 'evacuationData.vehicleNo'),
+      driverName: requireString(evacuationData.driverName, 'evacuationData.driverName'),
+      totalBunches: requireString(evacuationData.totalBunches, 'evacuationData.totalBunches'),
+      rangeStartDay: requireString(evacuationData.rangeStartDay, 'evacuationData.rangeStartDay'),
+      rangeEndDay: requireString(evacuationData.rangeEndDay, 'evacuationData.rangeEndDay'),
+    },
+    alternativeLoader: requireString(root.alternativeLoader, 'alternativeLoader'),
+    timeouts: {
+      short: requireNumber(timeouts.short, 'timeouts.short'),
+      medium: requireNumber(timeouts.medium, 'timeouts.medium'),
+      long: requireNumber(timeouts.long, 'timeouts.long'),
+    },
+    platformOptions: optionalStringArray(root.platformOptions),
+    testScenarios: parsedScenarios,
+  };
+}
+
+function loadBundle(): TestDataBundle {
+  const requestedProfile = process.env.TEST_PROFILE?.trim() || 'default';
+  try {
+    const parsed = parseBundle(readJson(requestedProfile));
+    return parsed;
+  } catch (error) {
+    if (requestedProfile === 'default') {
+      throw error;
+    }
+
+    const fallback = parseBundle(readJson('default'));
+    console.warn(
+      `[testData] Failed to load TEST_PROFILE='${requestedProfile}', falling back to 'default'.`,
+      error,
+    );
+    return fallback;
+  }
+}
+
+const bundle = loadBundle();
+
+function hashString(value: string): number {
+  let hash = 0;
+  for (let i = 0; i < value.length; i += 1) {
+    hash = (hash * 31 + value.charCodeAt(i)) | 0;
+  }
+  return Math.abs(hash);
+}
+
+function normalizeRuntimeText(value: string): string {
+  return value.replace(/\u00A0/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
+function uniqueStrings(items: string[]): string[] {
+  const normalized = items
+    .map((item) => normalizeRuntimeText(item))
+    .filter((item) => !!item);
+  return Array.from(new Set(normalized));
+}
+
+function resolveHarvestingPlatformSelection() {
+  const configuredPool = uniqueStrings([
+    ...bundle.platformOptions,
+    bundle.harvestingAddFlow.primaryPlatform,
+    bundle.harvestingAddFlow.secondaryPlatformOption,
+  ]);
+
+  const envPrimary = process.env.PLATFORM_PRIMARY ? normalizeRuntimeText(process.env.PLATFORM_PRIMARY) : undefined;
+  const envSecondary = process.env.PLATFORM_SECONDARY ? normalizeRuntimeText(process.env.PLATFORM_SECONDARY) : undefined;
+  const seed = process.env.TEST_RUN_ID?.trim() || `${Date.now()}-${process.pid}`;
+
+  const fallbackPrimary = normalizeRuntimeText(bundle.harvestingAddFlow.primaryPlatform);
+  const fallbackSecondary =
+    normalizeRuntimeText(bundle.harvestingAddFlow.secondaryPlatformOption) === fallbackPrimary
+      ? configuredPool.find((platform) => platform !== fallbackPrimary) || fallbackPrimary
+      : normalizeRuntimeText(bundle.harvestingAddFlow.secondaryPlatformOption);
+
+  if (envPrimary && configuredPool.length > 0 && !configuredPool.includes(envPrimary)) {
+    throw new Error(
+      `[testData] PLATFORM_PRIMARY='${envPrimary}' is not present in platformOptions=[${configuredPool.join(', ')}].`
+    );
+  }
+
+  if (envSecondary && configuredPool.length > 0 && !configuredPool.includes(envSecondary)) {
+    throw new Error(
+      `[testData] PLATFORM_SECONDARY='${envSecondary}' is not present in platformOptions=[${configuredPool.join(', ')}].`
+    );
+  }
+
+  if (envPrimary) {
+    const secondary = envSecondary || configuredPool.find((platform) => platform !== envPrimary) || fallbackSecondary;
+    return {
+      primaryPlatform: envPrimary,
+      secondaryPlatformOption: secondary,
+      seed,
+      pool: configuredPool,
+    };
+  }
+
+  if (configuredPool.length === 0) {
+    return {
+      primaryPlatform: fallbackPrimary,
+      secondaryPlatformOption: fallbackSecondary,
+      seed,
+      pool: configuredPool,
+    };
+  }
+
+  if (configuredPool.length === 1) {
+    return {
+      primaryPlatform: configuredPool[0],
+      secondaryPlatformOption: envSecondary || fallbackSecondary,
+      seed,
+      pool: configuredPool,
+    };
+  }
+
+  const primaryIndex = hashString(seed) % configuredPool.length;
+  const rotatedPrimary = configuredPool[primaryIndex];
+  const rotatedSecondary =
+    envSecondary || configuredPool[(primaryIndex + 1) % configuredPool.length] || fallbackSecondary;
+
+  return {
+    primaryPlatform: rotatedPrimary,
+    secondaryPlatformOption: rotatedSecondary === rotatedPrimary ? fallbackSecondary : rotatedSecondary,
+    seed,
+    pool: configuredPool,
+  };
+}
+
+const HARVESTING_PLATFORM_SELECTION = resolveHarvestingPlatformSelection();
+
+export const ACTIVE_TEST_PROFILE = process.env.TEST_PROFILE?.trim() || 'default';
+export const BASE_URL = process.env.BASE_URL?.trim() || bundle.baseUrl;
 export const LOGIN_CREDENTIALS = {
-  username: 'cbi_estateb',
-  password: 'pmmp123',
+  username: process.env.LOGIN_USERNAME?.trim() || bundle.loginCredentials.username,
+  password: process.env.LOGIN_PASSWORD?.trim() || bundle.loginCredentials.password,
 };
+export const HARVESTING_DATA = bundle.harvestingData;
+export const HARVESTING_ADD_FLOW = bundle.harvestingAddFlow;
+export { HARVESTING_PLATFORM_SELECTION };
+export const EVACUATION_DATA = bundle.evacuationData;
+export const ALTERNATIVE_LOADER = bundle.alternativeLoader;
+export const TIMEOUTS = bundle.timeouts;
+export const TEST_SCENARIOS = bundle.testScenarios;
 
-// ===== BASE URL =====
-export const BASE_URL = 'https://test.pmmp-abs.com/plantec/index';
-
-// ===== HARVESTING TEST DATA =====
-export const HARVESTING_DATA = {
-  estate: 'KAV - Punteh',
-  phase: 'Phase 1',
-  block: 'Block 1',
-  plantingYear: '2012',
-  lot: 'Lot 1',
-  loader: 'Loader - Punteh',
-  loaderStaff: 'LS02 - Loader Sarah',
-  task: 'T01',
-  platform: 'Platform 8',
-  // Harvest input values
-  totalBunches: '132',
-  rotten: '0',
-  unripe: '021',
-  overRipe: '01',
-  underRipe: '012',
-  emptyBunch: '0',
-  looseFruit: '0',
-  remarks: 'Automated harvesting data',
-};
-
-// ===== HARVESTING ADD AUTOMATED FLOW CONFIG =====
-// Single source of truth for the recorded Add FFB Harvesting selections.
-export const HARVESTING_ADD_FLOW = {
-  phase: 'Phase 1',
-  block: 'Block 1',
-  plantingYear: '2012',
-  lot: 'Lot 1',
-  task: 'T01',
-  primaryPlatform: 'Platform 1',
-  secondaryPlatformButton: 'Platform',
-  secondaryPlatformOption: 'Platform 5',
-  approverButton: 'User 04 (Regional Manager)',
-  approverOption: 'Hafizah user (Assistant',
-  harvesterGroupButton: 'Nothing Selected',
-  harvesterGroupOption: 'Harvester - Punteh',
-  harvesterSelectButton: 'Please Select At Least 1',
-  harvesters: [
-    'HAV006 - Joe',
-    'HAV007 - Zulhilmi',
-    'HAV007 - Zulhilmi',
-    'HAV009 - Yusri',
-    'HV001 - Estor',
-  ],
-  incrementActions: {
-    formDynamicSetup15: ['dblclick', 'click'],
-    formDynamicSetup18: ['dblclick', 'click', 'click'],
-    formDynamicSetup17: ['click', 'dblclick'],
-  },
-  finalCounterSelector: '#formDynamicSetup22 > .form-group > .input-group > span:nth-child(5) > .btn',
-  finalCounterClicks: 5,
-} as const;
-
-// ===== EVACUATION TEST DATA =====
-export const EVACUATION_DATA = {
-  estate: 'KAV - Punteh',
-  estateValue: '408',
-  phase: 'Phase 1',
-  block: 'Block 1',
-  lot: 'Lot 1',
-  binValue: '41',
-  vehicleValue: '15',
-  driverGroup: 'Driver - Punteh',
-  driver: 'DS02 - Driver Hashim',
-  loaderGroup: 'Loader - Punteh',
-  loader: 'LS04 - Witar',
-  vehicleNo: 'QAB1234',
-  driverName: 'Driver Test',
-  totalBunches: '120',
-  rangeStartDay: '1',
-  rangeEndDay: '18',
-};
-
-// ===== ALTERNATIVE LOADERS (for testing multiple selections) =====
-export const ALTERNATIVE_LOADER = 'LS04 - Witar';
-
-// ===== TIMEOUT SETTINGS =====
-export const TIMEOUTS = {
-  short: 3000,
-  medium: 5000,
-  long: 10000,
-};
-
-// ===== TEST SCENARIOS =====
-// Define different test data sets for different scenarios
-export const TEST_SCENARIOS = {
-  scenario1: {
-    estate: 'KAV - Punteh',
-    phase: 'Phase 1',
-    block: 'Block 1',
-    plantingYear: '2012',
-    lot: 'Lot 1',
-    loaderStaff: 'LS02 - Loader Sarah',
-    task: 'T01',
-    platform: 'Platform 8',
-    totalBunches: '132',
-    unripe: '021',
-    overRipe: '01',
-    underRipe: '012',
-  },
-  scenario2: {
-    // Add another scenario for testing different data
-    estate: 'KAV - Punteh',
-    phase: 'Phase 1',
-    block: 'Block 2',
-    plantingYear: '2012',
-    lot: 'Lot 2',
-    loaderStaff: 'LS04 - Witar',
-    task: 'T02',
-    platform: 'Platform 1',
-    totalBunches: '150',
-    unripe: '10',
-    overRipe: '5',
-    underRipe: '8',
-  },
-  evacuationScenario1: {
-    estate: 'KAV - Punteh',
-    phase: 'Phase 1',
-    block: 'Block 1',
-    lot: 'Lot 1',
-    vehicleNo: 'QAB1234',
-    driverName: 'Driver Test',
-    totalBunches: '120',
-  },
-};
+export function getTestData() {
+  return {
+    profile: ACTIVE_TEST_PROFILE,
+    baseUrl: BASE_URL,
+    loginCredentials: LOGIN_CREDENTIALS,
+    harvestingData: HARVESTING_DATA,
+    harvestingAddFlow: HARVESTING_ADD_FLOW,
+    evacuationData: EVACUATION_DATA,
+    alternativeLoader: ALTERNATIVE_LOADER,
+    timeouts: TIMEOUTS,
+    testScenarios: TEST_SCENARIOS,
+  };
+}
