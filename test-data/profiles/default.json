@@ -125,5 +125,38 @@
       "driverName": "Driver Test",
       "totalBunches": "120"
     }
+  },
+  "opJobCodeData": {
+    "moduleName": "FFB Harvesting",
+    "targetJobCode": "AUTO"
+  },
+  "opWorkerData": {
+    "workerGroup": "Harvester Oil Palm",
+    "primaryRole": "Driver",
+    "labourType": "Checkroll",
+    "rateType": "Daily Rate",
+    "targetEmployeeCode": "AUTO"
+  },
+  "opWorkerGroupData": {
+    "estate": "Titiwangsa",
+    "targetGroupName": "Auto Worker Group"
+  },
+  "opHolidayData": {
+    "estate": "Titiwangsa",
+    "holidayType": "Public Holiday (PH)",
+    "targetRemark": "Auto Holiday"
+  },
+  "opPublicHolidayData": {
+    "estate": "Titiwangsa",
+    "holidayRemarks": ["New Year's Day"]
+  },
+  "opHolidayTypeData": {
+    "targetName": "Auto Holiday Type"
+  },
+  "opAnnualLeaveData": {
+    "estate": "Titiwangsa",
+    "workerGroup": "Harvester Oil Palm",
+    "worker": "Ahmad Hasan",
+    "targetRemark": "Auto Annual Leave"
   }
 }

@@ -1,66 +1,212 @@
-<testsuites id="" name="" tests="1" failures="0" skipped="0" errors="1" time="196.060135">
-<testsuite name="ffb_harvesing\HarvestingAdd.spec.ts" timestamp="2026-08-10T08:14:29.794Z" hostname="chromium" tests="1" failures="0" skipped="0" time="187.376" errors="1">
-<testcase name="[TC-170] FFB Harvesting - Add automated flow" classname="ffb_harvesing\HarvestingAdd.spec.ts" time="187.376">
+<testsuites id="" name="" tests="6" failures="1" skipped="0" errors="5" time="257.3411939999999">
+<testsuite name="OP_Worker\AddWorker.spec.ts" timestamp="2026-08-11T06:01:37.819Z" hostname="chromium" tests="1" failures="0" skipped="0" time="37.634" errors="1">
+<testcase name="[OP Worker] Add Worker via Worker Group - basic flow" classname="OP_Worker\AddWorker.spec.ts" time="37.634">
 <system-out>
-<![CDATA[[HarvestingAdd] profile=default seed=1786349670334-31572 primaryPlatform="Platform 4" secondaryPlatform="Platform 5" platformPool=[Platform 1, Platform 2, Platform 3, Platform 4, Platform 5, Platform 6, Platform 7, Platform 8, Platform 9]
-Estate dropdown not available. Skipping estate selection.
-Waiting for Phase option: "Phase 1"
-Phase selected successfully: "Phase 1"
-Selected "Block 1" from native select for "Block"
-Selected "2012" from native select for "Planting Year"
-Selected "Lot 1" from native select for "Lot"
-Selected "T01" from native select for "Task"
-Selected "Platform 4" from native select for "Platform"
-Selected "Platform 5" from native select for "Platform"
-Field "Inspector" is present but option "Hafizah user (Assistant" was not selectable. Skipping optional field.
-Opening dropdown: "Nothing Selected" (attempt 1)
+<![CDATA[
+[[ATTACHMENT|..\test-results\OP_Worker-AddWorker--OP-Wo-a356b-a-Worker-Group---basic-flow-chromium\error-context.md]]
+]]>
+</system-out>
+<error message="locator.click: Target page, context or browser has been closed" type="Error">
+<![CDATA[  [chromium] › OP_Worker\AddWorker.spec.ts:53:5 › [OP Worker] Add Worker via Worker Group - basic flow › Open a Worker Group and view its workers 
 
-[[ATTACHMENT|..\test-results\ffb_harvesing-HarvestingAd-eda4f-esting---Add-automated-flow-chromium\test-failed-1.png]]
+    Error: locator.click: Target page, context or browser has been closed
+    Call log:
+      - waiting for getByRole('row', { name: /Harvester Oil Palm/i }).getByTitle('View Details')
 
-[[ATTACHMENT|..\test-results\ffb_harvesing-HarvestingAd-eda4f-esting---Add-automated-flow-chromium\video.webm]]
 
-[[ATTACHMENT|..\test-results\ffb_harvesing-HarvestingAd-eda4f-esting---Add-automated-flow-chromium\error-context.md]]
+      25 |   const row = page.getByRole('row', { name: new RegExp(groupName, 'i') });
+      26 |   // Eye icon in the Actions column shows a "View Details" tooltip - assumed to be a title attribute.
+    > 27 |   await row.getByTitle('View Details').click();
+         |                                        ^
+      28 | }
+      29 |
+      30 | async function openAddWorker(page: Page) {
+        at openWorkerGroupDetails (C:\Users\frrhn\Documents\GitHub\Plantec_Automation\OP_Worker\AddWorker.spec.ts:27:40)
+        at C:\Users\frrhn\Documents\GitHub\Plantec_Automation\OP_Worker\AddWorker.spec.ts:67:11
+        at C:\Users\frrhn\Documents\GitHub\Plantec_Automation\OP_Worker\AddWorker.spec.ts:65:3
 
-[[ATTACHMENT|..\test-results\ffb_harvesing-HarvestingAd-eda4f-esting---Add-automated-flow-chromium\trace.zip]]
+    Error Context: test-results\OP_Worker-AddWorker--OP-Wo-a356b-a-Worker-Group---basic-flow-chromium\error-context.md
+]]>
+</error>
+</testcase>
+</testsuite>
+<testsuite name="OP_Worker\AddWorkerGroup.spec.ts" timestamp="2026-08-11T06:01:37.819Z" hostname="chromium" tests="1" failures="1" skipped="0" time="26.473" errors="0">
+<testcase name="[OP Worker Group] Add Worker Group - basic flow" classname="OP_Worker\AddWorkerGroup.spec.ts" time="26.473">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|..\test-results\OP_Worker-AddWorkerGroup---8700a-d-Worker-Group---basic-flow-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|..\test-results\OP_Worker-AddWorkerGroup---8700a-d-Worker-Group---basic-flow-chromium\error-context.md]]
+]]>
+</system-out>
+<failure message="expect(locator).toBeVisible() failed" type="expect.toBeVisible">
+<![CDATA[  [chromium] › OP_Worker\AddWorkerGroup.spec.ts:41:5 › [OP Worker Group] Add Worker Group - basic flow › Open Add Worker Group page 
+
+    Error: expect(locator).toBeVisible() failed
+
+    Locator: locator('form select').first()
+    Expected: visible
+    Timeout: 15000ms
+    Error: element(s) not found
+
+    Call log:
+      - Expect "toBeVisible" with timeout 15000ms
+      - waiting for locator('form select').first()
+
+
+      53 |   await test.step('Open Add Worker Group page', async () => {
+      54 |     await navigateToAddWorkerGroup(page);
+    > 55 |     await expect(workerGroupPage.estateSelect).toBeVisible({ timeout: 15000 });
+         |                                                ^
+      56 |   });
+      57 |
+      58 |   await test.step('Fill and save worker group form', async () => {
+        at C:\Users\frrhn\Documents\GitHub\Plantec_Automation\OP_Worker\AddWorkerGroup.spec.ts:55:48
+        at C:\Users\frrhn\Documents\GitHub\Plantec_Automation\OP_Worker\AddWorkerGroup.spec.ts:53:3
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    test-results\OP_Worker-AddWorkerGroup---8700a-d-Worker-Group---basic-flow-chromium\test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: test-results\OP_Worker-AddWorkerGroup---8700a-d-Worker-Group---basic-flow-chromium\error-context.md
+]]>
+</failure>
+</testcase>
+</testsuite>
+<testsuite name="OP_Worker\DeleteWorker.spec.ts" timestamp="2026-08-11T06:01:37.819Z" hostname="chromium" tests="1" failures="0" skipped="0" time="4.835" errors="1">
+<testcase name="[OP Worker] Delete Worker - basic flow" classname="OP_Worker\DeleteWorker.spec.ts" time="4.835">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|..\test-results\OP_Worker-DeleteWorker--OP-Worker-Delete-Worker---basic-flow-chromium\error-context.md]]
+]]>
+</system-out>
+<error message="page.waitForLoadState: Target page, context or browser has been closed" type="Error">
+<![CDATA[  [chromium] › OP_Worker\DeleteWorker.spec.ts:44:5 › [OP Worker] Delete Worker - basic flow › Login 
+
+    Error: page.waitForLoadState: Target page, context or browser has been closed
+    =========================== logs ===========================
+      "commit" event fired
+    ============================================================
+
+       at tests\pages\LoginPage.ts:38
+
+      36 |     
+      37 |     // Wait for navigation to complete
+    > 38 |     await this.page.waitForLoadState('networkidle');
+         |                     ^
+      39 |   }
+      40 |
+      41 |   /**
+        at LoginPage.login (C:\Users\frrhn\Documents\GitHub\Plantec_Automation\tests\pages\LoginPage.ts:38:21)
+        at C:\Users\frrhn\Documents\GitHub\Plantec_Automation\OP_Worker\DeleteWorker.spec.ts:51:5
+        at C:\Users\frrhn\Documents\GitHub\Plantec_Automation\OP_Worker\DeleteWorker.spec.ts:49:3
+
+    Error Context: test-results\OP_Worker-DeleteWorker--OP-Worker-Delete-Worker---basic-flow-chromium\error-context.md
+]]>
+</error>
+</testcase>
+</testsuite>
+<testsuite name="OP_Worker\DeleteWorkerGroup.spec.ts" timestamp="2026-08-11T06:01:37.819Z" hostname="chromium" tests="1" failures="0" skipped="0" time="1.654" errors="1">
+<testcase name="[OP Worker Group] Delete Worker Group - basic flow" classname="OP_Worker\DeleteWorkerGroup.spec.ts" time="1.654">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|..\test-results\OP_Worker-DeleteWorkerGrou-5405d-e-Worker-Group---basic-flow-chromium\error-context.md]]
+]]>
+</system-out>
+<error message="page.goto: Target page, context or browser has been closed" type="Error">
+<![CDATA[  [chromium] › OP_Worker\DeleteWorkerGroup.spec.ts:38:5 › [OP Worker Group] Delete Worker Group - basic flow › Login 
+
+    Error: page.goto: Target page, context or browser has been closed
+    Call log:
+      - navigating to "https://test.pmmp-abs.com/plantec/index", waiting until "load"
+
+
+       at tests\pages\BasePage.ts:19
+
+      17 |    */
+      18 |   async goto(url: string) {
+    > 19 |     await this.page.goto(url);
+         |                     ^
+      20 |   }
+      21 |
+      22 |   /**
+        at LoginPage.goto (C:\Users\frrhn\Documents\GitHub\Plantec_Automation\tests\pages\BasePage.ts:19:21)
+        at C:\Users\frrhn\Documents\GitHub\Plantec_Automation\OP_Worker\DeleteWorkerGroup.spec.ts:44:21
+        at C:\Users\frrhn\Documents\GitHub\Plantec_Automation\OP_Worker\DeleteWorkerGroup.spec.ts:43:3
+
+    Error Context: test-results\OP_Worker-DeleteWorkerGrou-5405d-e-Worker-Group---basic-flow-chromium\error-context.md
+]]>
+</error>
+</testcase>
+</testsuite>
+<testsuite name="OP_Worker\EditWorker.spec.ts" timestamp="2026-08-11T06:01:37.819Z" hostname="chromium" tests="1" failures="0" skipped="0" time="1.627" errors="1">
+<testcase name="[OP Worker] Edit Worker - basic flow" classname="OP_Worker\EditWorker.spec.ts" time="1.627">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|..\test-results\OP_Worker-EditWorker--OP-Worker-Edit-Worker---basic-flow-chromium\error-context.md]]
+]]>
+</system-out>
+<error message="page.goto: Target page, context or browser has been closed" type="Error">
+<![CDATA[  [chromium] › OP_Worker\EditWorker.spec.ts:42:5 › [OP Worker] Edit Worker - basic flow › Login ────
+
+    Error: page.goto: Target page, context or browser has been closed
+    Call log:
+      - navigating to "https://test.pmmp-abs.com/plantec/index", waiting until "load"
+
+
+       at tests\pages\BasePage.ts:19
+
+      17 |    */
+      18 |   async goto(url: string) {
+    > 19 |     await this.page.goto(url);
+         |                     ^
+      20 |   }
+      21 |
+      22 |   /**
+        at LoginPage.goto (C:\Users\frrhn\Documents\GitHub\Plantec_Automation\tests\pages\BasePage.ts:19:21)
+        at C:\Users\frrhn\Documents\GitHub\Plantec_Automation\OP_Worker\EditWorker.spec.ts:49:21
+        at C:\Users\frrhn\Documents\GitHub\Plantec_Automation\OP_Worker\EditWorker.spec.ts:48:3
+
+    Error Context: test-results\OP_Worker-EditWorker--OP-Worker-Edit-Worker---basic-flow-chromium\error-context.md
+]]>
+</error>
+</testcase>
+</testsuite>
+<testsuite name="OP_Worker\EditWorkerGroup.spec.ts" timestamp="2026-08-11T06:01:37.819Z" hostname="chromium" tests="1" failures="0" skipped="0" time="180.391" errors="1">
+<testcase name="[OP Worker Group] Edit Worker Group - basic flow" classname="OP_Worker\EditWorkerGroup.spec.ts" time="180.391">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|..\test-results\OP_Worker-EditWorkerGroup--949b0-t-Worker-Group---basic-flow-chromium\test-failed-1.png]]
+
+[[ATTACHMENT|..\test-results\OP_Worker-EditWorkerGroup--949b0-t-Worker-Group---basic-flow-chromium\error-context.md]]
 ]]>
 </system-out>
 <error message="Test timeout of 180000ms exceeded." type="Error">
-<![CDATA[  [chromium] › ffb_harvesing\HarvestingAdd.spec.ts:523:5 › [TC-170] FFB Harvesting - Add automated flow › Fill main harvesting selections 
+<![CDATA[  [chromium] › OP_Worker\EditWorkerGroup.spec.ts:36:5 › [OP Worker Group] Edit Worker Group - basic flow › Navigate to Worker Group list and open Edit form 
 
     Test timeout of 180000ms exceeded.
 
-    Error: Unable to locate dropdown/select for "Nothing Selected".
+    Error: locator.click: Test timeout of 180000ms exceeded.
+    Call log:
+      - waiting for getByRole('row', { name: /Auto Worker Group/i }).getByTitle('Edit')
 
-      332 |   }
-      333 |
-    > 334 |   throw new Error(`Unable to locate dropdown/select for "${buttonLabel}".`);
-          |         ^
-      335 | }
-      336 |
-      337 | async function selectHarvesters(page: Page) {
-        at selectDropdownByButtonLabel (C:\Users\hafiz\OneDrive\Documents\ABS\Plantec_Automation\ffb_harvesing\HarvestingAdd.spec.ts:334:9)
-        at selectHarvesters (C:\Users\hafiz\OneDrive\Documents\ABS\Plantec_Automation\ffb_harvesing\HarvestingAdd.spec.ts:338:3)
-        at fillHarvestingDropdowns (C:\Users\hafiz\OneDrive\Documents\ABS\Plantec_Automation\ffb_harvesing\HarvestingAdd.spec.ts:630:3)
-        at C:\Users\hafiz\OneDrive\Documents\ABS\Plantec_Automation\ffb_harvesing\HarvestingAdd.spec.ts:539:5
-        at C:\Users\hafiz\OneDrive\Documents\ABS\Plantec_Automation\ffb_harvesing\HarvestingAdd.spec.ts:536:3
+
+      13 | async function openEditWorkerGroup(page: Page, groupName: string) {
+      14 |   const row = page.getByRole('row', { name: new RegExp(groupName, 'i') });
+    > 15 |   await row.getByTitle('Edit').click();
+         |                                ^
+      16 | }
+      17 |
+      18 | async function verifyWorkerGroupUpdated(page: Page, groupName: string) {
+        at openEditWorkerGroup (C:\Users\frrhn\Documents\GitHub\Plantec_Automation\OP_Worker\EditWorkerGroup.spec.ts:15:32)
+        at C:\Users\frrhn\Documents\GitHub\Plantec_Automation\OP_Worker\EditWorkerGroup.spec.ts:49:11
+        at C:\Users\frrhn\Documents\GitHub\Plantec_Automation\OP_Worker\EditWorkerGroup.spec.ts:47:3
 
     attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
-    test-results\ffb_harvesing-HarvestingAd-eda4f-esting---Add-automated-flow-chromium\test-failed-1.png
+    test-results\OP_Worker-EditWorkerGroup--949b0-t-Worker-Group---basic-flow-chromium\test-failed-1.png
     ────────────────────────────────────────────────────────────────────────────────────────────────
 
-    attachment #2: video (video/webm) ──────────────────────────────────────────────────────────────
-    test-results\ffb_harvesing-HarvestingAd-eda4f-esting---Add-automated-flow-chromium\video.webm
-    ────────────────────────────────────────────────────────────────────────────────────────────────
-
-    Error Context: test-results\ffb_harvesing-HarvestingAd-eda4f-esting---Add-automated-flow-chromium\error-context.md
-
-    attachment #4: trace (application/zip) ─────────────────────────────────────────────────────────
-    test-results\ffb_harvesing-HarvestingAd-eda4f-esting---Add-automated-flow-chromium\trace.zip
-    Usage:
-
-        npx playwright show-trace test-results\ffb_harvesing-HarvestingAd-eda4f-esting---Add-automated-flow-chromium\trace.zip
-
-    ────────────────────────────────────────────────────────────────────────────────────────────────
+    Error Context: test-results\OP_Worker-EditWorkerGroup--949b0-t-Worker-Group---basic-flow-chromium\error-context.md
 ]]>
 </error>
 </testcase>

@@ -1,5 +1,6 @@
 import fs from 'fs';
 import path from 'path';
+import process from 'process';
 
 type ClickAction = 'click' | 'dblclick';
 
@@ -74,6 +75,39 @@ type TestDataBundle = {
   };
   platformOptions: string[];
   testScenarios: Record<string, Record<string, string>>;
+  opJobCodeData: {
+    moduleName: string;
+    targetJobCode: string;
+  };
+  opWorkerData: {
+    workerGroup: string;
+    primaryRole: string;
+    labourType: string;
+    rateType: string;
+    targetEmployeeCode: string;
+  };
+  opWorkerGroupData: {
+    estate: string;
+    targetGroupName: string;
+  };
+  opHolidayData: {
+    estate: string;
+    holidayType: string;
+    targetRemark: string;
+  };
+  opPublicHolidayData: {
+    estate: string;
+    holidayRemarks: string[];
+  };
+  opHolidayTypeData: {
+    targetName: string;
+  };
+  opAnnualLeaveData: {
+    estate: string;
+    workerGroup: string;
+    worker: string;
+    targetRemark: string;
+  };
 };
 
 function readJson(profileName: string): unknown {
@@ -154,6 +188,13 @@ function parseBundle(raw: unknown): TestDataBundle {
   const evacuationData = requireObject(root.evacuationData, 'evacuationData');
   const timeouts = requireObject(root.timeouts, 'timeouts');
   const testScenarios = requireObject(root.testScenarios, 'testScenarios');
+  const opJobCodeData = requireObject(root.opJobCodeData, 'opJobCodeData');
+  const opWorkerData = requireObject(root.opWorkerData, 'opWorkerData');
+  const opWorkerGroupData = requireObject(root.opWorkerGroupData, 'opWorkerGroupData');
+  const opHolidayData = requireObject(root.opHolidayData, 'opHolidayData');
+  const opPublicHolidayData = requireObject(root.opPublicHolidayData, 'opPublicHolidayData');
+  const opHolidayTypeData = requireObject(root.opHolidayTypeData, 'opHolidayTypeData');
+  const opAnnualLeaveData = requireObject(root.opAnnualLeaveData, 'opAnnualLeaveData');
 
   const incrementActionsRaw = requireObject(harvestingAddFlow.incrementActions, 'harvestingAddFlow.incrementActions');
   const incrementActions: Record<string, ClickAction[]> = {};
@@ -242,6 +283,39 @@ function parseBundle(raw: unknown): TestDataBundle {
     },
     platformOptions: optionalStringArray(root.platformOptions),
     testScenarios: parsedScenarios,
+    opJobCodeData: {
+      moduleName: requireString(opJobCodeData.moduleName, 'opJobCodeData.moduleName'),
+      targetJobCode: requireString(opJobCodeData.targetJobCode, 'opJobCodeData.targetJobCode'),
+    },
+    opWorkerData: {
+      workerGroup: requireString(opWorkerData.workerGroup, 'opWorkerData.workerGroup'),
+      primaryRole: requireString(opWorkerData.primaryRole, 'opWorkerData.primaryRole'),
+      labourType: requireString(opWorkerData.labourType, 'opWorkerData.labourType'),
+      rateType: requireString(opWorkerData.rateType, 'opWorkerData.rateType'),
+      targetEmployeeCode: requireString(opWorkerData.targetEmployeeCode, 'opWorkerData.targetEmployeeCode'),
+    },
+    opWorkerGroupData: {
+      estate: requireString(opWorkerGroupData.estate, 'opWorkerGroupData.estate'),
+      targetGroupName: requireString(opWorkerGroupData.targetGroupName, 'opWorkerGroupData.targetGroupName'),
+    },
+    opHolidayData: {
+      estate: requireString(opHolidayData.estate, 'opHolidayData.estate'),
+      holidayType: requireString(opHolidayData.holidayType, 'opHolidayData.holidayType'),
+      targetRemark: requireString(opHolidayData.targetRemark, 'opHolidayData.targetRemark'),
+    },
+    opPublicHolidayData: {
+      estate: requireString(opPublicHolidayData.estate, 'opPublicHolidayData.estate'),
+      holidayRemarks: requireStringArray(opPublicHolidayData.holidayRemarks, 'opPublicHolidayData.holidayRemarks'),
+    },
+    opHolidayTypeData: {
+      targetName: requireString(opHolidayTypeData.targetName, 'opHolidayTypeData.targetName'),
+    },
+    opAnnualLeaveData: {
+      estate: requireString(opAnnualLeaveData.estate, 'opAnnualLeaveData.estate'),
+      workerGroup: requireString(opAnnualLeaveData.workerGroup, 'opAnnualLeaveData.workerGroup'),
+      worker: requireString(opAnnualLeaveData.worker, 'opAnnualLeaveData.worker'),
+      targetRemark: requireString(opAnnualLeaveData.targetRemark, 'opAnnualLeaveData.targetRemark'),
+    },
   };
 }
 
@@ -370,6 +444,13 @@ export const EVACUATION_DATA = bundle.evacuationData;
 export const ALTERNATIVE_LOADER = bundle.alternativeLoader;
 export const TIMEOUTS = bundle.timeouts;
 export const TEST_SCENARIOS = bundle.testScenarios;
+export const OP_JOB_CODE_DATA = bundle.opJobCodeData;
+export const OP_WORKER_DATA = bundle.opWorkerData;
+export const OP_WORKER_GROUP_DATA = bundle.opWorkerGroupData;
+export const OP_HOLIDAY_DATA = bundle.opHolidayData;
+export const OP_PUBLIC_HOLIDAY_DATA = bundle.opPublicHolidayData;
+export const OP_HOLIDAY_TYPE_DATA = bundle.opHolidayTypeData;
+export const OP_ANNUAL_LEAVE_DATA = bundle.opAnnualLeaveData;
 
 export function getTestData() {
   return {
@@ -382,5 +463,12 @@ export function getTestData() {
     alternativeLoader: ALTERNATIVE_LOADER,
     timeouts: TIMEOUTS,
     testScenarios: TEST_SCENARIOS,
+    opJobCodeData: OP_JOB_CODE_DATA,
+    opWorkerData: OP_WORKER_DATA,
+    opWorkerGroupData: OP_WORKER_GROUP_DATA,
+    opHolidayData: OP_HOLIDAY_DATA,
+    opPublicHolidayData: OP_PUBLIC_HOLIDAY_DATA,
+    opHolidayTypeData: OP_HOLIDAY_TYPE_DATA,
+    opAnnualLeaveData: OP_ANNUAL_LEAVE_DATA,
   };
 }
