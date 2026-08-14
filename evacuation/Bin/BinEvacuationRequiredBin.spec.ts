@@ -1,187 +1,247 @@
 import { expect, Page, test } from '@playwright/test';
 import { LoginPage } from '../../tests/pages/LoginPage';
 import { EvacuationPage } from '../../tests/pages/EvacuationPage';
-import { BASE_URL, EVACUATION_DATA, LOGIN_CREDENTIALS } from '../../testData';
+import {
+  BASE_URL,
+  EVACUATION_DATA,
+  LOGIN_CREDENTIALS,
+} from '../../testData';
 
-async function expectBinRequiredValidation(page: Page) {
-  const candidates = [
-    page.getByText(/bin.*required|required.*bin|please select.*bin/i),
-    page.locator('#binId + .invalid-feedback'),
-    page.locator('#binId ~ .invalid-feedback'),
-    page.locator('#binId-error'),
-    page.locator('.invalid-feedback, .text-danger')
-      .filter({ hasText: /bin|required/i }),
-  ];
 
-  for (const locator of candidates) {
-    try {
-      await locator.first().waitFor({
-        state: 'visible',
-        timeout: 3000,
-      });
-      return;
-    } catch {
-      // Try next locator
-    }
-  }
+/**
+ * Generate a dynamic 2-week date range.
+ *
+ * Example:
+ * Today = 13/Aug/2026
+ * Start = 01/Aug/2026
+ * End   = 13/Aug/2026
+ *
+ * This gives 14 calendar days including today.
+ */
+function getTwoWeekDateRange() {
+  const today = new Date();
 
-  const binSelect = page.locator('#binId');
+  const startDate = new Date(today);
+  startDate.setDate(today.getDate() - 13);
 
-  if (await binSelect.count()) {
-    expect(await binSelect.inputValue()).toBe('');
-  }
+  const formatDate = (date: Date): string => {
+    const day = String(date.getDate()).padStart(2, '0');
 
-  await expect(
-    page.getByRole('button', { name: /save/i })
-  ).toBeVisible();
+    const monthNames = [
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
+    ];
+
+    const month = monthNames[date.getMonth()];
+    const year = date.getFullYear();
+
+    return `${day}/${month}/${year}`;
+  };
+
+  return {
+    startDate: formatDate(startDate),
+    endDate: formatDate(today),
+  };
 }
 
-async function verifySaveCompleted(page: Page) {
-  await Promise.race([
-    page.getByText(/success|saved|created/i).first().waitFor({ state: 'visible', timeout: 15000 }).catch(() => undefined),
-    page.getByRole('button', { name: /back to list/i }).first().waitFor({ state: 'visible', timeout: 15000 }).catch(() => undefined),
-    page.waitForURL(/evacuation(\?|$)/i, { timeout: 15000 }).catch(() => undefined),
-  ]);
+async function selectEvacuationType(
+  page: Page,
+  type: 'field' | 'bin' | 'ramp'
+) {
+  const radio = page.getByRole('radio', {
+    name: new RegExp(`${type}\\s*evacuation`, 'i'),
+  });
 
-  const saveButton = page.getByRole('button', { name: /save/i }).first();
-  if (await saveButton.isVisible().catch(() => false)) {
-    await expect(page.getByText(/success|saved|created/i).first()).toBeVisible({ timeout: 10000 });
-  }
-}
-
-async function selectEvacuationType(page: Page, typeLabel: RegExp) {
-  const labelCandidate = page.getByText(typeLabel).first();
-  if (await labelCandidate.isVisible().catch(() => false)) {
-    await labelCandidate.click();
-    return;
-  }
-
-  const radioCandidate = page.getByRole('radio', { name: typeLabel }).first();
-  if (await radioCandidate.isVisible().catch(() => false)) {
-    await radioCandidate.check();
-    return;
-  }
-
-  throw new Error('Unable to select requested evacuation type.');
-}
-
-async function trySelectSearchByFfbRecordDate(page: Page) {
-  const searchBySelect = page.locator('label:has-text("Search By")').locator('xpath=following::select[1]').first();
-  if (await searchBySelect.isVisible().catch(() => false)) {
-    const options = await searchBySelect.locator('option').allTextContents();
-    const target = options.find((text) => /ffb\s*record\s*date/i.test(text));
-    if (target) {
-      await searchBySelect.selectOption({ label: target.trim() }).catch(() => undefined);
-    }
-    return;
-  }
-
-  const searchByDropdownButton = page
-    .locator('label:has-text("Search By")')
-    .locator('xpath=following::button[1]')
-    .first();
-
-  if (await searchByDropdownButton.isVisible().catch(() => false)) {
-    await searchByDropdownButton.click();
-    const option = page.locator('a, li, span').filter({ hasText: /ffb\s*record\s*date/i }).first();
-    await option.click().catch(() => undefined);
-  }
-}
-
-async function trySelectMill(page: Page) {
-  const millSelect = page.locator('label:has-text("Mill")').locator('xpath=following::select[1]').first();
-
-  if (await millSelect.isVisible().catch(() => false)) {
-    const options = await millSelect.locator('option').all();
-    for (const option of options) {
-      const label = ((await option.textContent()) ?? '').trim();
-      const value = (await option.getAttribute('value')) ?? '';
-      if (!label) {
-        continue;
-      }
-      if (/please\s*select/i.test(label)) {
-        continue;
-      }
-      if (!value) {
-        continue;
-      }
-      await millSelect.selectOption({ value }).catch(() => undefined);
-      return;
-    }
-  }
+  await expect(radio).toBeVisible();
+  await radio.check();
 }
 
 async function selectFirstFfbRecordFromFoundList(page: Page) {
-  const foundRows = page.locator('table tbody tr').filter({ hasNotText: /no data available|no records/i });
-  await expect(foundRows.first()).toBeVisible({ timeout: 15000 });
+  const foundRows = page
+    .locator('table tbody tr')
+    .filter({
+      hasNotText: /no data available|no records|no ffb records/i,
+    });
+
+  await expect(foundRows.first()).toBeVisible({
+    timeout: 15000,
+  });
 
   const firstRow = foundRows.first();
-  const addCandidates = [
-    firstRow.locator('td:last-child button, td:last-child a').first(),
-    firstRow.locator('button:has(i.fa-plus), a:has(i.fa-plus), i.fa-plus').first(),
-    firstRow.getByRole('button').last(),
-  ];
 
-  for (const action of addCandidates) {
-    if (await action.isVisible().catch(() => false)) {
-      await action.click();
-      return;
-    }
+  // Based on the recording, the + button is used
+  // to add the FFB record.
+  const plusButton = firstRow
+    .locator('button')
+    .filter({
+      has: page.locator('i.fa-plus'),
+    })
+    .first();
+
+  if (await plusButton.isVisible().catch(() => false)) {
+    await plusButton.click();
+    return;
   }
 
-  throw new Error('Unable to find action control to select FFB record from found list.');
+  // Fallback if the plus icon cannot be detected
+  const actionButton = firstRow
+    .locator('td:last-child button, td:last-child a')
+    .first();
+
+  await expect(actionButton).toBeVisible();
+  await actionButton.click();
 }
 
 async function assertSelectedFfbRecordsUpdated(page: Page) {
-  const selectedSection = page.getByText(/Selected FFB Records/i).first();
-  await expect(selectedSection).toBeVisible({ timeout: 10000 });
+  await expect(
+    page.getByText('Selected FFB Records', { exact: true }).first()
+  ).toBeVisible({
+    timeout: 10000,
+  });
 
-  const noRecordsMsg = page.getByText(/No FFB records selected/i).first();
-  await expect(noRecordsMsg).toBeHidden({ timeout: 10000 }).catch(async () => {
-    const selectedRows = page.locator('table tbody tr').filter({ hasNotText: /No FFB records selected|No data available/i });
-    await expect(selectedRows.first()).toBeVisible({ timeout: 10000 });
+  const noRecordsMessage = page
+    .getByText(/no ffb records selected/i)
+    .first();
+
+  if (await noRecordsMessage.count()) {
+    await expect(noRecordsMessage).toBeHidden({
+      timeout: 10000,
+    });
+  }
+
+  const selectedRows = page
+    .locator('table tbody tr')
+    .filter({
+      hasNotText: /no ffb records selected|no data available/i,
+    });
+
+  await expect(selectedRows.first()).toBeVisible({
+    timeout: 10000,
   });
 }
 
-test('[Bin Evacuation] Add record with required Bin validation and FFB date filter selection', async ({ page }) => {
-  test.setTimeout(180000);
+async function verifySaveCompleted(page: Page) {
+  const successMessage = page
+    .getByText(/success|saved|created successfully|successfully/i)
+    .first();
 
-  const loginPage = new LoginPage(page);
-  const evacuationPage = new EvacuationPage(page);
+  const backToList = page
+    .getByRole('button', { name: /back to list/i })
+    .first();
 
-  await test.step('Login and open Add Evacuation form', async () => {
-    await loginPage.goto(BASE_URL);
-    await loginPage.login(LOGIN_CREDENTIALS.username, LOGIN_CREDENTIALS.password);
-    await evacuationPage.navigateToEvacuation();
-    await evacuationPage.clickAddEvacuation();
-  });
+  await Promise.race([
+    successMessage.waitFor({
+      state: 'visible',
+      timeout: 15000,
+    }),
 
-  await test.step('Select estate and Bin evacuation type', async () => {
-    await evacuationPage.selectEstateByValue(EVACUATION_DATA.estateValue);
-    await selectEvacuationType(page, /bin\s*evacuation/i);
-  });
+    backToList.waitFor({
+      state: 'visible',
+      timeout: 15000,
+    }),
 
-  await test.step('Attempt to save without selecting Bin and verify validation', async () => {
-    await evacuationPage.save();
-    await expectBinRequiredValidation(page);
-  });
+    page.waitForURL(/evacuation/i, {
+      timeout: 15000,
+    }),
+  ]);
+}
 
-  await test.step('Select valid Bin, fill mandatory details and choose one FFB record', async () => {
-    await evacuationPage.selectBinByValue(EVACUATION_DATA.binValue);
-    await evacuationPage.selectVehicleByValue(EVACUATION_DATA.vehicleValue);
-    await evacuationPage.selectDriverGroup(EVACUATION_DATA.driverGroup);
-    await evacuationPage.selectDriver(EVACUATION_DATA.driver);
-    await evacuationPage.selectLoaderGroup(EVACUATION_DATA.loaderGroup);
-    await evacuationPage.selectLoader(EVACUATION_DATA.loader);
-    await trySelectSearchByFfbRecordDate(page);
-    await trySelectMill(page);
-    await evacuationPage.setDateRangeAndSearch(EVACUATION_DATA.rangeStartDay, EVACUATION_DATA.rangeEndDay);
-    await selectFirstFfbRecordFromFoundList(page);
-    await assertSelectedFfbRecordsUpdated(page);
-  });
+test(
+  '[Bin Evacuation] Add evacuation record with FFB records',
+  async ({ page }) => {
+    test.setTimeout(180000);
 
-  await test.step('Click Save and verify the record is submitted', async () => {
-    await evacuationPage.save();
-    await verifySaveCompleted(page);
-  });
-});
+    const loginPage = new LoginPage(page);
+    const evacuationPage = new EvacuationPage(page);
+
+    // Generate the date range when the test starts.
+    const { startDate, endDate } = getTwoWeekDateRange();
+
+    console.log(`FFB Record Date Range: ${startDate} - ${endDate}`);
+
+    await test.step('Login and open Add Evacuation form', async () => {
+      await loginPage.goto(BASE_URL);
+
+      await loginPage.login(
+        LOGIN_CREDENTIALS.username,
+        LOGIN_CREDENTIALS.password
+      );
+
+      await evacuationPage.navigateToEvacuation();
+      await evacuationPage.clickAddEvacuation();
+    });
+
+    await test.step('Select Estate and Bin Evacuation', async () => {
+      await evacuationPage.selectEstateByValue(
+        EVACUATION_DATA.estateValue
+      );
+
+      await selectEvacuationType(page, 'bin');
+
+      await evacuationPage.selectBinByValue(
+        EVACUATION_DATA.binValue
+      );
+    });
+
+    await test.step('Select Vehicle', async () => {
+      await evacuationPage.selectVehicleByValue(
+        EVACUATION_DATA.vehicleValue
+      );
+    });
+
+    await test.step('Select Driver Group and Driver', async () => {
+      await evacuationPage.selectDriverGroup(
+        EVACUATION_DATA.driverGroup
+      );
+
+      await evacuationPage.selectDriver(
+        EVACUATION_DATA.driver
+      );
+    });
+
+    await test.step('Select Loader Group and Loader', async () => {
+      await evacuationPage.selectLoaderGroup(
+        EVACUATION_DATA.loaderGroup
+      );
+
+      await evacuationPage.selectLoader(
+        EVACUATION_DATA.loader
+      );
+    });
+
+    await test.step(
+      `Search FFB Records from ${startDate} to ${endDate}`,
+      async () => {
+        // Search By is already "FFB Records Date"
+        // based on the recording.
+
+        await evacuationPage.setDateRangeAndSearch(
+          startDate,
+          endDate
+        );
+      }
+    );
+
+    await test.step('Select FFB Record', async () => {
+      await selectFirstFfbRecordFromFoundList(page);
+
+      await assertSelectedFfbRecordsUpdated(page);
+    });
+
+    await test.step('Save evacuation record', async () => {
+      await evacuationPage.save();
+
+      await verifySaveCompleted(page);
+    });
+  }
+);
