@@ -41,7 +41,7 @@ export class EvacuationPage extends BasePage {
   async clickAddEvacuation() {
     // Open the Add dropdown, then click the Evacuation option
     await this.addDropdownButton().click();
-    await this.page.locator('.dropdown-menu').filter({ isVisible: true }).getByText('Evacuation').click();
+    await this.page.locator('.dropdown-menu').filter({ visible: true }).getByText('Evacuation').click();
     await this.page.waitForLoadState('networkidle');
   }
 
