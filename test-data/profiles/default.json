@@ -67,8 +67,8 @@
     "vehicleNo": "QAB1234",
     "driverName": "Driver Test",
     "totalBunches": "120",
-    "rangeStartDay": "1",
-    "rangeEndDay": "18"
+    "rangeStartDay": "01",
+  "rangeEndDay": "13"
   },
   "alternativeLoader": "LS04 - Witar",
   "timeouts": {

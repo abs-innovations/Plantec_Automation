@@ -8,7 +8,8 @@ import { BasePage } from './BasePage';
 export class EvacuationPage extends BasePage {
   readonly moduleRoot = () => this.page.getByText('[SLDB]');
   readonly evacuationLink = () => this.page.getByRole('link', { name: ' Evacuation' });
-  readonly addEvacuationLink = () => this.page.getByRole('link', { name: ' Add Evacuation' });
+  // Broad selector to match the Add dropdown regardless of element type
+  readonly addDropdownButton = () => this.page.locator('button, a, [role="button"]').filter({ hasText: /^add/i }).first();
   readonly saveButton = () => this.page.getByRole('button', { name: /save/i });
   readonly backToListButton = () => this.page.getByRole('button', { name: /back to list/i });
 
@@ -38,7 +39,9 @@ export class EvacuationPage extends BasePage {
    * Open Add Evacuation form.
    */
   async clickAddEvacuation() {
-    await this.addEvacuationLink().click();
+    // Open the Add dropdown, then click the Evacuation option
+    await this.addDropdownButton().click();
+    await this.page.locator('.dropdown-menu').filter({ isVisible: true }).getByText('Evacuation').click();
     await this.page.waitForLoadState('networkidle');
   }
 
@@ -63,7 +66,16 @@ export class EvacuationPage extends BasePage {
    * Select estate by option value from native select.
    */
   async selectEstateByValue(estateValue: string) {
-    await this.page.locator('#estateId').selectOption(estateValue);
+    const estateSelect = this.page.locator('#estateId');
+    const tagName = await estateSelect.evaluate((el) => el.tagName.toLowerCase()).catch(() => '');
+    const inputType = await estateSelect.getAttribute('type').catch(() => '');
+
+    // Skip if estate is a hidden input (pre-populated by the app)
+    if (tagName === 'input' && inputType === 'hidden') {
+      return;
+    }
+
+    await estateSelect.selectOption(estateValue);
   }
 
   /**
@@ -113,15 +125,18 @@ export class EvacuationPage extends BasePage {
    * Select loader group from generic dropdown.
    */
   async selectLoaderGroup(loaderGroupName: string) {
-    await this.page.getByRole('button', { name: /nothing selected/i }).nth(0).click();
+    await this.page.getByRole('button', { name: /nothing selected/i }).first().click();
     await this.page.locator('a').filter({ hasText: loaderGroupName }).first().click();
+    // Close the dropdown after selection
+    await this.page.keyboard.press('Escape');
   }
 
   /**
    * Select loader from generic dropdown.
    */
   async selectLoader(loaderName: string) {
-    await this.page.getByRole('button', { name: /nothing selected/i }).nth(1).click();
+    // After loader group is selected it no longer shows "Nothing Selected", so loader is at index 0
+    await this.page.getByRole('button', { name: /nothing selected/i }).first().click();
     await this.page.locator('a').filter({ hasText: loaderName }).first().click();
   }
 
