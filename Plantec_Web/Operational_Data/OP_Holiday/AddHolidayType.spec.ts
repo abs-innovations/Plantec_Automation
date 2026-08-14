@@ -1,6 +1,6 @@
 import { expect, Page, test } from '@playwright/test';
-import { BASE_URL, LOGIN_CREDENTIALS } from '../../../testData';
-import { LoginPage } from '../../../tests/pages/LoginPage';
+import { BASE_URL, LOGIN_CREDENTIALS } from '../../testData';
+import { LoginPage } from '../../tests/pages/LoginPage';
 import { HolidayTypePage, NewHolidayTypeInput } from './HolidayTypePage';
 
 function randomLetters(length: number) {

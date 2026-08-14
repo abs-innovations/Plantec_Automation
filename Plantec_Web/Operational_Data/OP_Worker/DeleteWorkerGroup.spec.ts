@@ -1,6 +1,6 @@
 import { expect, Page, test } from '@playwright/test';
-import { BASE_URL, LOGIN_CREDENTIALS, OP_WORKER_GROUP_DATA } from '../../../testData';
-import { LoginPage } from '../../../tests/pages/LoginPage';
+import { BASE_URL, LOGIN_CREDENTIALS, OP_WORKER_GROUP_DATA } from '../../testData';
+import { LoginPage } from '../../tests/pages/LoginPage';
 
 const TARGET_WORKER_GROUP = OP_WORKER_GROUP_DATA.targetGroupName;
 

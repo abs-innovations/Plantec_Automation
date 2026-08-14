@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test:playwright": "playwright test",
-    "test:report": "node scripts/generate-testmo-report.js"
+    "test:playwright": "playwright test --config=Plantec_Web/playwright.config.ts",
+    "test:ffb": "playwright test --config=Plantec_Web/playwright.ffb.config.ts",
+    "test:report": "node Plantec_Web/scripts/generate-testmo-report.js"
   },
   "keywords": [],
   "author": "",

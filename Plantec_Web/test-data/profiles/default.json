@@ -1,0 +1,162 @@
+{
+  "baseUrl": "https://test.pmmp-abs.com/plantec/index",
+  "loginCredentials": {
+    "username": "cbi_estateb",
+    "password": "pmmpcbi123"
+  },
+  "harvestingData": {
+    "estate": "KAV - Punteh",
+    "phase": "Phase 1",
+    "block": "Block 1",
+    "plantingYear": "2012",
+    "lot": "Lot 1",
+    "loader": "Loader - Punteh",
+    "loaderStaff": "LS02 - Loader Sarah",
+    "task": "T01",
+    "platform": "Platform 8",
+    "totalBunches": "132",
+    "rotten": "0",
+    "unripe": "021",
+    "overRipe": "01",
+    "underRipe": "012",
+    "emptyBunch": "0",
+    "looseFruit": "0",
+    "remarks": "Automated harvesting data"
+  },
+  "harvestingAddFlow": {
+    "phase": "Phase 1",
+    "block": "Block 1",
+    "plantingYear": "2012",
+    "lot": "Lot 1",
+    "task": "T01",
+    "primaryPlatform": "Platform 1",
+    "secondaryPlatformButton": "Platform",
+    "secondaryPlatformDataId": "PlatformId",
+    "secondaryPlatformOption": "Platform 8",
+    "approverButton": "User 04 (Regional Manager)",
+    "approverOption": "Hafizah user (Assistant",
+    "harvesterGroupButton": "Nothing Selected",
+    "harvesterGroupOption": "Harvester - Punteh",
+    "harvesterSelectButton": "Please Select At Least 1",
+    "harvesters": [
+      "HAV006 - Joe",
+      "HAV007 - Zulhilmi",
+      "HAV009 - Yusri",
+      "HV001 - Estor"
+    ],
+    "incrementActions": {
+      "formDynamicSetup15": ["dblclick", "click"],
+      "formDynamicSetup18": ["dblclick", "click", "click"],
+      "formDynamicSetup17": ["click", "dblclick"]
+    },
+    "finalCounterSelector": "#formDynamicSetup22 > .form-group > .input-group > span:nth-child(5) > .btn",
+    "finalCounterClicks": 5
+  },
+  "evacuationData": {
+    "estate": "KAV - Punteh",
+    "estateValue": "408",
+    "phase": "Phase 1",
+    "block": "Block 1",
+    "lot": "Lot 1",
+    "binValue": "41",
+    "vehicleValue": "15",
+    "driverGroup": "Driver - Punteh",
+    "driver": "DS02 - Driver Hashim",
+    "loaderGroup": "Loader - Punteh",
+    "loader": "LS04 - Witar",
+    "vehicleNo": "QAB1234",
+    "driverName": "Driver Test",
+    "totalBunches": "120",
+    "rangeStartDay": "01",
+  "rangeEndDay": "13"
+  },
+  "alternativeLoader": "LS04 - Witar",
+  "timeouts": {
+    "short": 3000,
+    "medium": 5000,
+    "long": 10000
+  },
+  "platformOptions": [
+    "Platform 1",
+    "Platform 2",
+    "Platform 3",
+    "Platform 4",
+    "Platform 5",
+    "Platform 6",
+    "Platform 7",
+    "Platform 8",
+    "Platform 9"
+  ],
+  "testScenarios": {
+    "scenario1": {
+      "estate": "KAV - Punteh",
+      "phase": "Phase 1",
+      "block": "Block 1",
+      "plantingYear": "2012",
+      "lot": "Lot 1",
+      "loaderStaff": "LS02 - Loader Sarah",
+      "task": "T01",
+      "platform": "Platform 8",
+      "totalBunches": "132",
+      "unripe": "021",
+      "overRipe": "01",
+      "underRipe": "012"
+    },
+    "scenario2": {
+      "estate": "KAV - Punteh",
+      "phase": "Phase 1",
+      "block": "Block 2",
+      "plantingYear": "2012",
+      "lot": "Lot 2",
+      "loaderStaff": "LS04 - Witar",
+      "task": "T02",
+      "platform": "Platform 1",
+      "totalBunches": "150",
+      "unripe": "10",
+      "overRipe": "5",
+      "underRipe": "8"
+    },
+    "evacuationScenario1": {
+      "estate": "KAV - Punteh",
+      "phase": "Phase 1",
+      "block": "Block 1",
+      "lot": "Lot 1",
+      "vehicleNo": "QAB1234",
+      "driverName": "Driver Test",
+      "totalBunches": "120"
+    }
+  },
+  "opJobCodeData": {
+    "moduleName": "FFB Harvesting",
+    "targetJobCode": "AUTO"
+  },
+  "opWorkerData": {
+    "workerGroup": "Harvester Oil Palm",
+    "primaryRole": "Driver",
+    "labourType": "Checkroll",
+    "rateType": "Daily Rate",
+    "targetEmployeeCode": "AUTO"
+  },
+  "opWorkerGroupData": {
+    "estate": "Titiwangsa",
+    "targetGroupName": "Auto Worker Group"
+  },
+  "opHolidayData": {
+    "estate": "Titiwangsa",
+    "holidayType": "Public Holiday (PH)",
+    "targetRemark": "Auto Holiday"
+  },
+  "opPublicHolidayData": {
+    "estate": "Titiwangsa",
+    "holidayRemarks": ["New Year's Day"]
+  },
+  "opHolidayTypeData": {
+    "targetName": "Auto Holiday Type"
+  },
+  "opAnnualLeaveData": {
+    "estate": "Titiwangsa",
+    "workerGroup": "Harvester Oil Palm",
+    "worker": "Ahmad Hasan",
+    "targetRemark": "Auto Annual Leave"
+  }
+}

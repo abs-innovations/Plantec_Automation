@@ -1,5 +1,5 @@
 import { expect, Page, test } from '@playwright/test';
-import { LoginPage } from '../../tests/pages/LoginPage';
+import { LoginPage } from '../tests/pages/LoginPage';
 import {
   ACTIVE_TEST_PROFILE,
   BASE_URL,
@@ -7,7 +7,7 @@ import {
   HARVESTING_DATA,
   HARVESTING_PLATFORM_SELECTION,
   LOGIN_CREDENTIALS,
-} from '../../testData';
+} from '../testData';
 
 type ClickAction = 'click' | 'dblclick';
 

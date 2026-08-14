@@ -1,0 +1,211 @@
+<testsuites id="" name="" tests="27" failures="0" skipped="26" errors="1" time="282.071766">
+<testsuite name="evacuation\Bin\BinEvacuationRequiredBin.spec.ts" timestamp="2026-08-14T06:30:06.546Z" hostname="chromium" tests="1" failures="0" skipped="1" time="242.286" errors="0">
+<testcase name="[Bin Evacuation] Add evacuation record with FFB records" classname="evacuation\Bin\BinEvacuationRequiredBin.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="evacuation\evacuation.spec.ts" timestamp="2026-08-14T06:30:06.546Z" hostname="chromium" tests="1" failures="0" skipped="0" time="60.016" errors="1">
+<testcase name="Evacuation Module - Add Evacuation Record" classname="evacuation\evacuation.spec.ts" time="60.016">
+<system-out>
+<![CDATA[
+[[ATTACHMENT|..\..\test-results\evacuation-evacuation-Evac-5087b-ule---Add-Evacuation-Record-chromium\error-context.md]]
+
+[[ATTACHMENT|..\..\test-results\evacuation-evacuation-Evac-5087b-ule---Add-Evacuation-Record-chromium\trace.zip]]
+]]>
+</system-out>
+<error message="Test timeout of 30000ms exceeded." type="Error">
+<![CDATA[  [chromium] › evacuation\evacuation.spec.ts:6:5 › Evacuation Module - Add Evacuation Record ───────
+
+    Test timeout of 30000ms exceeded.
+
+    Tearing down "context" exceeded the test timeout of 30000ms.
+
+    Error: locator.click: Test ended.
+    Call log:
+      - waiting for getByRole('textbox', { name: 'Username' })
+
+
+       at tests\pages\LoginPage.ts:24
+
+      22 |    */
+      23 |   async login(username: string, password: string) {
+    > 24 |     await this.usernameField().click();
+         |                                ^
+      25 |     await this.usernameField().fill(username);
+      26 |     await this.usernameField().press('Tab');
+      27 |     
+        at LoginPage.login (C:\Users\hafiz\OneDrive\Documents\ABS\Plantec_Automation\Plantec_Web\tests\pages\LoginPage.ts:24:32)
+        at C:\Users\hafiz\OneDrive\Documents\ABS\Plantec_Automation\Plantec_Web\evacuation\evacuation.spec.ts:12:21
+        at C:\Users\hafiz\OneDrive\Documents\ABS\Plantec_Automation\Plantec_Web\evacuation\evacuation.spec.ts:10:3
+
+    Error: browserContext.close: Target page, context or browser has been closed
+
+    Error Context: ..\test-results\evacuation-evacuation-Evac-5087b-ule---Add-Evacuation-Record-chromium\error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    ..\test-results\evacuation-evacuation-Evac-5087b-ule---Add-Evacuation-Record-chromium\trace.zip
+    Usage:
+
+        npx playwright show-trace ..\test-results\evacuation-evacuation-Evac-5087b-ule---Add-Evacuation-Record-chromium\trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+]]>
+</error>
+</testcase>
+</testsuite>
+<testsuite name="evacuation\Field\FieldEvacuationAdd.spec.ts" timestamp="2026-08-14T06:30:06.546Z" hostname="chromium" tests="1" failures="0" skipped="1" time="242.587" errors="0">
+<testcase name="[Field Evacuation] Add record with FFB date filter selection" classname="evacuation\Field\FieldEvacuationAdd.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="evacuation\Ramp\RampEvacuationAdd.spec.ts" timestamp="2026-08-14T06:30:06.546Z" hostname="chromium" tests="1" failures="0" skipped="1" time="242.709" errors="0">
+<testcase name="[Ramp Evacuation] Add record with FFB date filter selection" classname="evacuation\Ramp\RampEvacuationAdd.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="ffb_harvesting\EditFFB.spec.ts" timestamp="2026-08-14T06:30:06.546Z" hostname="chromium" tests="1" failures="0" skipped="1" time="242.567" errors="0">
+<testcase name="FFB-102 - Edit FFB" classname="ffb_harvesting\EditFFB.spec.ts">
+<properties>
+<property name="test_case" value="FFB-102">
+</property>
+</properties>
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="ffb_harvesting\HarvestingAdd.spec.ts" timestamp="2026-08-14T06:30:06.546Z" hostname="chromium" tests="1" failures="0" skipped="1" time="242.414" errors="0">
+<testcase name="[TC-170] FFB Harvesting - Add automated flow" classname="ffb_harvesting\HarvestingAdd.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="ffb_harvesting\HarvestingMaxBunchValidation.spec.ts" timestamp="2026-08-14T06:30:06.546Z" hostname="chromium" tests="1" failures="0" skipped="1" time="0" errors="0">
+<testcase name="[TC-161] Auto-correct Total Harvested Bunches when value is more than 1000" classname="ffb_harvesting\HarvestingMaxBunchValidation.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="Operational_Data\OP_Holiday\AddAnnualLeave.spec.ts" timestamp="2026-08-14T06:30:06.546Z" hostname="chromium" tests="1" failures="0" skipped="1" time="0" errors="0">
+<testcase name="[OP Holiday] Add Annual Leave Worker - basic flow" classname="Operational_Data\OP_Holiday\AddAnnualLeave.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="Operational_Data\OP_Holiday\AddHoliday.spec.ts" timestamp="2026-08-14T06:30:06.546Z" hostname="chromium" tests="1" failures="0" skipped="1" time="0" errors="0">
+<testcase name="[OP Holiday] Add Holiday - basic flow" classname="Operational_Data\OP_Holiday\AddHoliday.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="Operational_Data\OP_Holiday\AddHolidayType.spec.ts" timestamp="2026-08-14T06:30:06.546Z" hostname="chromium" tests="1" failures="0" skipped="1" time="0" errors="0">
+<testcase name="[OP Holiday] Add Holiday Type - basic flow" classname="Operational_Data\OP_Holiday\AddHolidayType.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="Operational_Data\OP_Holiday\AddPublicHoliday.spec.ts" timestamp="2026-08-14T06:30:06.546Z" hostname="chromium" tests="1" failures="0" skipped="1" time="0" errors="0">
+<testcase name="[OP Holiday] Add Public Holiday - basic flow" classname="Operational_Data\OP_Holiday\AddPublicHoliday.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="Operational_Data\OP_Holiday\DeleteAnnualLeave.spec.ts" timestamp="2026-08-14T06:30:06.546Z" hostname="chromium" tests="1" failures="0" skipped="1" time="0" errors="0">
+<testcase name="[OP Holiday] Delete Annual Leave Worker - basic flow" classname="Operational_Data\OP_Holiday\DeleteAnnualLeave.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="Operational_Data\OP_Holiday\DeleteHoliday.spec.ts" timestamp="2026-08-14T06:30:06.546Z" hostname="chromium" tests="1" failures="0" skipped="1" time="0" errors="0">
+<testcase name="[OP Holiday] Delete Holiday - basic flow" classname="Operational_Data\OP_Holiday\DeleteHoliday.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="Operational_Data\OP_Holiday\DeleteHolidayType.spec.ts" timestamp="2026-08-14T06:30:06.546Z" hostname="chromium" tests="1" failures="0" skipped="1" time="0" errors="0">
+<testcase name="[OP Holiday] Delete Holiday Type - basic flow" classname="Operational_Data\OP_Holiday\DeleteHolidayType.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="Operational_Data\OP_Holiday\EditAnnualLeave.spec.ts" timestamp="2026-08-14T06:30:06.546Z" hostname="chromium" tests="1" failures="0" skipped="1" time="0" errors="0">
+<testcase name="[OP Holiday] Edit Annual Leave Worker - basic flow" classname="Operational_Data\OP_Holiday\EditAnnualLeave.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="Operational_Data\OP_Holiday\EditHoliday.spec.ts" timestamp="2026-08-14T06:30:06.546Z" hostname="chromium" tests="1" failures="0" skipped="1" time="0" errors="0">
+<testcase name="[OP Holiday] Edit Holiday - basic flow" classname="Operational_Data\OP_Holiday\EditHoliday.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="Operational_Data\OP_Holiday\EditHolidayType.spec.ts" timestamp="2026-08-14T06:30:06.546Z" hostname="chromium" tests="1" failures="0" skipped="1" time="0" errors="0">
+<testcase name="[OP Holiday] Edit Holiday Type - basic flow" classname="Operational_Data\OP_Holiday\EditHolidayType.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="Operational_Data\OP_Job\AddJobCode.spec.ts" timestamp="2026-08-14T06:30:06.546Z" hostname="chromium" tests="1" failures="0" skipped="1" time="0" errors="0">
+<testcase name="[OP Job Code] Add Job Code - basic flow" classname="Operational_Data\OP_Job\AddJobCode.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="Operational_Data\OP_Job\DeleteJobCode.spec.ts" timestamp="2026-08-14T06:30:06.546Z" hostname="chromium" tests="1" failures="0" skipped="1" time="0" errors="0">
+<testcase name="[OP Job Code] Delete Job Code - basic flow" classname="Operational_Data\OP_Job\DeleteJobCode.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="Operational_Data\OP_Job\EditJobCode.spec.ts" timestamp="2026-08-14T06:30:06.546Z" hostname="chromium" tests="1" failures="0" skipped="1" time="0" errors="0">
+<testcase name="[OP Job Code] Edit Job Code - basic flow" classname="Operational_Data\OP_Job\EditJobCode.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="Operational_Data\OP_Worker\AddWorker.spec.ts" timestamp="2026-08-14T06:30:06.546Z" hostname="chromium" tests="1" failures="0" skipped="1" time="0" errors="0">
+<testcase name="[OP Worker] Add Worker via Worker Group - basic flow" classname="Operational_Data\OP_Worker\AddWorker.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="Operational_Data\OP_Worker\AddWorkerGroup.spec.ts" timestamp="2026-08-14T06:30:06.546Z" hostname="chromium" tests="1" failures="0" skipped="1" time="0" errors="0">
+<testcase name="[OP Worker Group] Add Worker Group - basic flow" classname="Operational_Data\OP_Worker\AddWorkerGroup.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="Operational_Data\OP_Worker\DeleteWorker.spec.ts" timestamp="2026-08-14T06:30:06.546Z" hostname="chromium" tests="1" failures="0" skipped="1" time="0" errors="0">
+<testcase name="[OP Worker] Delete Worker - basic flow" classname="Operational_Data\OP_Worker\DeleteWorker.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="Operational_Data\OP_Worker\DeleteWorkerGroup.spec.ts" timestamp="2026-08-14T06:30:06.546Z" hostname="chromium" tests="1" failures="0" skipped="1" time="0" errors="0">
+<testcase name="[OP Worker Group] Delete Worker Group - basic flow" classname="Operational_Data\OP_Worker\DeleteWorkerGroup.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="Operational_Data\OP_Worker\EditWorker.spec.ts" timestamp="2026-08-14T06:30:06.546Z" hostname="chromium" tests="1" failures="0" skipped="1" time="0" errors="0">
+<testcase name="[OP Worker] Edit Worker - basic flow" classname="Operational_Data\OP_Worker\EditWorker.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="Operational_Data\OP_Worker\EditWorkerGroup.spec.ts" timestamp="2026-08-14T06:30:06.546Z" hostname="chromium" tests="1" failures="0" skipped="1" time="0" errors="0">
+<testcase name="[OP Worker Group] Edit Worker Group - basic flow" classname="Operational_Data\OP_Worker\EditWorkerGroup.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+<testsuite name="tests\test-3.spec.ts" timestamp="2026-08-14T06:30:06.546Z" hostname="chromium" tests="1" failures="0" skipped="1" time="0" errors="0">
+<testcase name="test" classname="tests\test-3.spec.ts">
+<skipped>
+</skipped>
+</testcase>
+</testsuite>
+</testsuites>

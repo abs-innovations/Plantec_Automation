@@ -1,6 +1,6 @@
 import { expect, Page, test } from '@playwright/test';
-import { BASE_URL, LOGIN_CREDENTIALS } from '../../../testData';
-import { LoginPage } from '../../../tests/pages/LoginPage';
+import { BASE_URL, LOGIN_CREDENTIALS } from '../../testData';
+import { LoginPage } from '../../tests/pages/LoginPage';
 import { AnnualLeavePage, NewAnnualLeaveInput } from './AnnualLeavePage';
 
 // TODO: swap these for an estate / worker group / worker that actually exist in your test data.

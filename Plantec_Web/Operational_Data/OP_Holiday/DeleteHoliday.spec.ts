@@ -1,6 +1,6 @@
 import { expect, Page, test } from '@playwright/test';
-import { BASE_URL, LOGIN_CREDENTIALS, OP_HOLIDAY_DATA } from '../../../testData';
-import { LoginPage } from '../../../tests/pages/LoginPage';
+import { BASE_URL, LOGIN_CREDENTIALS, OP_HOLIDAY_DATA } from '../../testData';
+import { LoginPage } from '../../tests/pages/LoginPage';
 
 const TARGET_HOLIDAY_REMARK = OP_HOLIDAY_DATA.targetRemark;
 

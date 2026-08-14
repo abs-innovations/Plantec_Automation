@@ -1,6 +1,6 @@
 import { expect, Page, test } from '@playwright/test';
-import { LoginPage } from '../../tests/pages/LoginPage';
-import { BASE_URL, LOGIN_CREDENTIALS } from '../../testData';
+import { LoginPage } from '../tests/pages/LoginPage';
+import { BASE_URL, LOGIN_CREDENTIALS } from '../testData';
 
 type ValidationData = {
   estate: string;

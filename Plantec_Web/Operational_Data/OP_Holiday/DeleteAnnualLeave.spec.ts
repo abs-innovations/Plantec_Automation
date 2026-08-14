@@ -1,6 +1,6 @@
 import { expect, Page, test } from '@playwright/test';
-import { BASE_URL, LOGIN_CREDENTIALS, OP_ANNUAL_LEAVE_DATA } from '../../../testData';
-import { LoginPage } from '../../../tests/pages/LoginPage';
+import { BASE_URL, LOGIN_CREDENTIALS, OP_ANNUAL_LEAVE_DATA } from '../../testData';
+import { LoginPage } from '../../tests/pages/LoginPage';
 
 const TARGET_ANNUAL_LEAVE_REMARK = OP_ANNUAL_LEAVE_DATA.targetRemark;
 

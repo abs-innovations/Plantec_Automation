@@ -1,6 +1,6 @@
 import { expect, Page, test } from '@playwright/test';
-import { BASE_URL, LOGIN_CREDENTIALS } from '../../../testData';
-import { LoginPage } from '../../../tests/pages/LoginPage';
+import { BASE_URL, LOGIN_CREDENTIALS } from '../../testData';
+import { LoginPage } from '../../tests/pages/LoginPage';
 import { NewWorkerConfigurationInput, WorkerConfigurationPage } from './WorkerPage';
 
 // TODO: swap for whichever Worker Group you want this test to add a worker into.

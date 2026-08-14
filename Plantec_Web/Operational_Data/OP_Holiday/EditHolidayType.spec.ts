@@ -1,6 +1,6 @@
 import { expect, Page, test } from '@playwright/test';
-import { BASE_URL, LOGIN_CREDENTIALS, OP_HOLIDAY_TYPE_DATA } from '../../../testData';
-import { LoginPage } from '../../../tests/pages/LoginPage';
+import { BASE_URL, LOGIN_CREDENTIALS, OP_HOLIDAY_TYPE_DATA } from '../../testData';
+import { LoginPage } from '../../tests/pages/LoginPage';
 import { HolidayTypePage } from './HolidayTypePage';
 
 const TARGET_HOLIDAY_TYPE_NAME = OP_HOLIDAY_TYPE_DATA.targetName;

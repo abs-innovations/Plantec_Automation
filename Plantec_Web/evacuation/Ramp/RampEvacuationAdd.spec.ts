@@ -1,7 +1,7 @@
 import { expect, Page, test } from '@playwright/test';
-import { LoginPage } from '../../../tests/pages/LoginPage';
-import { EvacuationPage } from '../../../tests/pages/EvacuationPage';
-import { BASE_URL, EVACUATION_DATA, LOGIN_CREDENTIALS } from '../../../testData';
+import { LoginPage } from '../../tests/pages/LoginPage';
+import { EvacuationPage } from '../../tests/pages/EvacuationPage';
+import { BASE_URL, EVACUATION_DATA, LOGIN_CREDENTIALS } from '../../testData';
 
 async function verifySaveCompleted(page: Page) {
   await Promise.race([
