@@ -1,5 +1,7 @@
 const fs = require('fs');
 const path = require('path');
+const http = require('http');
+const https = require('https');
 const { spawnSync } = require('child_process');
 const nodemailer = require('nodemailer');
  
@@ -346,7 +348,6 @@ function buildReportData({
   testmoUrl,
   jenkinsBuildUrl,
   emailBaseSubject,
-  publishError,
 }) {
   const summary = {
     totalTestCases: parsed.totalTests,
