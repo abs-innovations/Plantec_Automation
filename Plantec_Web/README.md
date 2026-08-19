@@ -19,6 +19,24 @@ Profiles are stored in:
 npm run test:ffb
 ```
 
+Tests use a shared login credential, so runs are configured to execute serially. Do not start multiple test scripts at the same time with the same credentials.
+
+### Run by migrated folder
+
+```powershell
+npm run test:ffb
+npm run test:evacuation
+npm run test:operational
+```
+
+To check folder discovery without logging in or executing tests:
+
+```powershell
+npm run test:ffb:list
+npm run test:evacuation:list
+npm run test:operational:list
+```
+
 ### Run with a specific profile
 
 ```powershell
